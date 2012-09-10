@@ -10,21 +10,22 @@ import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.mmartinic.urial.model.UnnamedEpisode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-/**
- * Searches for unnamed episode files
- * 
- * @author Marin Martinic
- * @version $Revision: 41 $, $Date: 2008-12-17 23:32:43 +0100 (Wed, 17 Dec 2008) $, $Author: mmartinic $
- */
+@Component
 public class UnnamedEpisodesSearcher {
 
     private final File m_searchFolder;
     private final IOFileFilter m_seriesFilenameFilter;
+
+    @Value("${search.subfolders}")
     private boolean m_searchSubfolders = false;
 
-    public UnnamedEpisodesSearcher(final IOFileFilter p_seriesFilenameFilter, final String p_searchFolderPath) {
+    @Autowired
+    public UnnamedEpisodesSearcher(final IOFileFilter p_seriesFilenameFilter, @Value("${search.folder.path}") final String p_searchFolderPath) {
         Assert.notNull(p_searchFolderPath, "Search folder path is null");
         Assert.notNull(p_seriesFilenameFilter, "SeriesFilenameFilter is null");
 

@@ -10,19 +10,25 @@ import org.mmartinic.urial.model.UnnamedEpisode;
 import org.mmartinic.urial.service.EpisodeService;
 import org.mmartinic.urial.util.NamingUtils;
 import org.mmartinic.urial.util.RenameHistory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 /**
  * 
  * Pairs unnamed and named episodes
  */
+@Component
 public class EpisodeMatcher {
 
     private final UnnamedEpisodesSearcher m_unnamedEpisodesSearcher;
     private final EpisodeService m_episodeService;
     private final double m_minMatchPercentage;
 
-    public EpisodeMatcher(final UnnamedEpisodesSearcher p_unnamedEpisodesSearcher, final EpisodeService p_episodeService, final double p_minMatchPercentage) {
+    @Autowired
+    public EpisodeMatcher(final UnnamedEpisodesSearcher p_unnamedEpisodesSearcher, final EpisodeService p_episodeService,
+            @Value("${min.match.percentage}") final double p_minMatchPercentage) {
         Assert.notNull(p_unnamedEpisodesSearcher);
         Assert.notNull(p_episodeService);
         Assert.isTrue(p_minMatchPercentage >= 0, "Minimal match percantage is less than 0");

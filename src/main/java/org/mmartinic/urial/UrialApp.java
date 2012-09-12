@@ -29,7 +29,10 @@ import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 import javax.swing.plaf.metal.MetalIconFactory;
 
-import org.mmartinic.urial.filesystem.SeriesDirectoryPoller;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.mmartinic.urial.filesystem.EpisodeMatcher;
 import org.mmartinic.urial.model.RenameResult;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -38,12 +41,14 @@ public class UrialApp extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
+    private static final Logger logger = LogManager.getLogger(UrialApp.class);
+
     private static final int WIDTH = 400;
     private static final int HEIGHT = 400;
     private static final String ICON_PATH = "/renamer_logo.png";
     private JTextArea m_textArea;
 
-    private final SeriesDirectoryPoller m_seriesDirectoryPoller;
+    private final EpisodeMatcher m_episodeMatcher;
     private final long m_pollInterval;
 
     public UrialApp(final String p_string) {
@@ -51,8 +56,8 @@ public class UrialApp extends JFrame {
         createGUI();
 
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        m_seriesDirectoryPoller = (SeriesDirectoryPoller) context.getBean("seriesDirectoryPoller");
-        m_pollInterval = m_seriesDirectoryPoller.getPollInterval();
+        m_episodeMatcher = (EpisodeMatcher) context.getBean("episodeMatcher");
+        m_pollInterval = m_episodeMatcher.getPollInterval();
 
         m_textArea.append(new Date() + " Started\n");
 
@@ -124,7 +129,7 @@ public class UrialApp extends JFrame {
             systemTray.add(trayIcon);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error creating tray icon", e);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
     }
@@ -169,10 +174,16 @@ public class UrialApp extends JFrame {
         protected Void doInBackground() throws Exception {
 
             while (!isCancelled()) {
-                RenameResult renameResult = m_seriesDirectoryPoller.pollAndRename();
-                if (renameResult != null) {
-                    publish(new Date().toString(), "\n", renameResult.getSuccessResult(), renameResult.getFailResult(), "\n");
-                    // publish(renameResult.getNoNameResult());
+                try {
+                    RenameResult renameResult = m_episodeMatcher.pollAndRename();
+                    String successResult = renameResult.getSuccessResult();
+                    String failResult = renameResult.getFailResult();
+                    if (StringUtils.isNotBlank(successResult) || StringUtils.isNotBlank(failResult)) {
+                        publish(new Date().toString(), "\n", successResult, failResult, "\n");
+                    }
+                }
+                catch (Exception e) {
+                    logger.error("Error in pollAndRename iteration", e);
                 }
                 TimeUnit.SECONDS.sleep(m_pollInterval);
             }

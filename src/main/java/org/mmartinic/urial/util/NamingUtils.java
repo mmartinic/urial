@@ -8,12 +8,16 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.mmartinic.urial.model.Episode;
 import org.mmartinic.urial.model.UnnamedEpisode;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 public final class NamingUtils {
+
+    private static final Logger logger = LogManager.getLogger(NamingUtils.class);
 
     private static final String C_FORBIDDEN_FILE_CHARACTERS_REGEX = "[\\\\/:*?\"<>|]";
     private static final String C_EPISODE_NAME_DELIMITERS_REGEX = "[._\\[\\]-]";
@@ -139,6 +143,7 @@ public final class NamingUtils {
             formatter.format("%s - %d%s%02d - %s", seriesName, p_episode.getSeasonNumber(), C_SEASON_EPISODE_NUMBER_DELIMITER, p_episode.getEpisodeNumber(), name);
         }
 
+        formatter.close();
         return stringWriter.toString();
     }
 
@@ -165,11 +170,7 @@ public final class NamingUtils {
             returnValue = file.renameTo(newFile);
         }
         catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (returnValue) {
-            RenameHistory.remove(p_unnamedEpisode);
+            logger.error("Error renaming file: " + file + " to new file: " + newFile, e);
         }
 
         return returnValue;

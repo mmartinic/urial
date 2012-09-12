@@ -20,22 +20,19 @@ public class SeriesFilenameFilter implements IOFileFilter {
     public SeriesFilenameFilter(@Value("${file.extensions}") final String[] p_fileExtensions) {
         Assert.notEmpty(p_fileExtensions);
         Assert.noNullElements(p_fileExtensions);
-
         m_suffixFileFilter = new SuffixFileFilter(toSuffixes(p_fileExtensions), IOCase.INSENSITIVE);
-    }
-
-    @Override
-    public boolean accept(final File p_dir, final String p_name) {
-        Assert.hasText(p_name);
-
-        return m_suffixFileFilter.accept(p_dir, p_name) && NamingUtils.isFileNameUnnamed(p_name);
     }
 
     @Override
     public boolean accept(final File p_file) {
         Assert.notNull(p_file);
-
         return accept(null, p_file.getName());
+    }
+
+    @Override
+    public boolean accept(final File p_dir, final String p_name) {
+        Assert.hasText(p_name);
+        return m_suffixFileFilter.accept(p_dir, p_name) && NamingUtils.isFileNameUnnamed(p_name);
     }
 
     // -----------------------------------------------------------------------

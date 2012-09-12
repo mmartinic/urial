@@ -9,6 +9,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.mmartinic.urial.model.UnnamedEpisode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,8 @@ import org.springframework.util.Assert;
 
 @Component
 public class UnnamedEpisodesSearcher {
+
+    private static final Logger logger = LogManager.getLogger(UnnamedEpisodesSearcher.class);
 
     private final File m_searchFolder;
     private final IOFileFilter m_seriesFilenameFilter;
@@ -40,8 +44,11 @@ public class UnnamedEpisodesSearcher {
         m_seriesFilenameFilter = p_seriesFilenameFilter;
     }
 
-    public Set<UnnamedEpisode> getUnnamedEpisodes() {
+    public void setSearchSubfolders(final boolean p_searchSubfolders) {
+        m_searchSubfolders = p_searchSubfolders;
+    }
 
+    public Set<UnnamedEpisode> getUnnamedEpisodes() {
         Collection<File> files = getUnnamedFiles();
         Set<UnnamedEpisode> unnamed = new LinkedHashSet<UnnamedEpisode>();
         for (File file : files) {
@@ -50,13 +57,13 @@ public class UnnamedEpisodesSearcher {
                 unnamed.add(episode);
             }
             catch (IllegalArgumentException e) {
-                e.printStackTrace();
+                logger.error("Error creating unnamed episode for file: " + file, e);
             }
         }
+        logger.info("Created " + unnamed.size() + " unnamed episodes");
         return unnamed;
     }
 
-    @SuppressWarnings("unchecked")
     private Set<File> getUnnamedFiles() {
         Collection<File> files;
         if (m_searchSubfolders) {
@@ -65,10 +72,7 @@ public class UnnamedEpisodesSearcher {
         else {
             files = FileUtils.listFiles(m_searchFolder, m_seriesFilenameFilter, FalseFileFilter.FALSE);
         }
+        logger.info("Found " + files.size() + " potential unnamed files");
         return new LinkedHashSet<File>(files);
-    }
-
-    public void setSearchSubfolders(final boolean p_searchSubfolders) {
-        m_searchSubfolders = p_searchSubfolders;
     }
 }

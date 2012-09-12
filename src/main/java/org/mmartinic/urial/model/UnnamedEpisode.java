@@ -51,6 +51,7 @@ public class UnnamedEpisode {
         StringWriter stringWriter = new StringWriter();
         Formatter formatter = new Formatter(stringWriter);
         formatter.format("[ %s ][ %02dx%02d ]", getSeriesName(), getSeasonNumber(), getNumber());
+        formatter.close();
         return stringWriter.toString();
     }
 

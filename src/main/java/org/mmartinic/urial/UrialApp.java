@@ -39,13 +39,15 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class UrialApp extends JFrame {
 
+    private static final String APP_NAME = "Urial";
+
     private static final long serialVersionUID = 1L;
 
     private static final Logger logger = LogManager.getLogger(UrialApp.class);
 
     private static final int WIDTH = 400;
     private static final int HEIGHT = 400;
-    private static final String ICON_PATH = "/renamer_logo.png";
+    private static final String ICON_PATH = "/urial_logo.png";
     private JTextArea m_textArea;
 
     private final EpisodeMatcher m_episodeMatcher;
@@ -114,7 +116,7 @@ public class UrialApp extends JFrame {
 
             PopupMenu popupMenu = new PopupMenu();
             popupMenu.add(exitItem);
-            TrayIcon trayIcon = new TrayIcon(getImage());
+            TrayIcon trayIcon = new TrayIcon(getAppImage());
             trayIcon.setPopupMenu(popupMenu);
             trayIcon.addMouseListener(new MouseAdapter() {
                 @Override
@@ -124,7 +126,7 @@ public class UrialApp extends JFrame {
                     }
                 }
             });
-            trayIcon.setToolTip("Renamer");
+            trayIcon.setToolTip(APP_NAME);
             SystemTray systemTray = SystemTray.getSystemTray();
             systemTray.add(trayIcon);
         }
@@ -134,7 +136,7 @@ public class UrialApp extends JFrame {
         }
     }
 
-    private Image getImage() {
+    private static Image getAppImage() {
         URL imageURL = UrialApp.class.getResource(ICON_PATH);
         if (imageURL == null) {
             return getBackupImage();
@@ -161,7 +163,8 @@ public class UrialApp extends JFrame {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new UrialApp("Renamer");
+                JFrame frame = new UrialApp(APP_NAME);
+                frame.setIconImage(getAppImage());
                 frame.pack();
                 frame.setVisible(true);
             }

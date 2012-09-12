@@ -1,8 +1,6 @@
 package org.mmartinic.urial.model;
 
 import java.io.File;
-import java.io.StringWriter;
-import java.util.Formatter;
 
 import org.mmartinic.urial.util.NamingUtils;
 import org.springframework.util.Assert;
@@ -15,8 +13,8 @@ public class UnnamedEpisode {
     private final File m_episodeFile;
 
     public UnnamedEpisode(final File p_file) {
-        this(NamingUtils.getSeriesNameFromUnnamedFileName(p_file.getName()), NamingUtils.getSeasonNumberFromUnnamedFileName(p_file.getName()), NamingUtils
-                .getEpisodeNumberFromUnnamedFileName(p_file.getName()), p_file);
+        this(NamingUtils.getSeriesNameFromUnnamedFileName(p_file.getName()), NamingUtils.getSeasonNumberFromUnnamedFileName(p_file.getName()),
+                NamingUtils.getEpisodeNumberFromUnnamedFileName(p_file.getName()), p_file);
     }
 
     public UnnamedEpisode(final String p_seriesName, final int p_seasonNumber, final int p_number, final File p_episodeFile) {
@@ -48,18 +46,15 @@ public class UnnamedEpisode {
 
     @Override
     public String toString() {
-        StringWriter stringWriter = new StringWriter();
-        Formatter formatter = new Formatter(stringWriter);
-        formatter.format("[ %s ][ %02dx%02d ]", getSeriesName(), getSeasonNumber(), getNumber());
-        formatter.close();
-        return stringWriter.toString();
+        return "UnnamedEpisode [m_seriesName=" + m_seriesName + ", m_seasonNumber=" + m_seasonNumber + ", m_number=" + m_number + ", m_episodeFile="
+                + m_episodeFile.getAbsolutePath() + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((m_episodeFile == null) ? 0 : m_episodeFile.hashCode());
+        result = prime * result + ((m_episodeFile == null) ? 0 : m_episodeFile.getAbsolutePath().hashCode());
         return result;
     }
 
@@ -80,7 +75,7 @@ public class UnnamedEpisode {
                 return false;
             }
         }
-        else if (!m_episodeFile.equals(other.m_episodeFile)) {
+        else if (!m_episodeFile.getAbsolutePath().equals(other.m_episodeFile.getAbsolutePath())) {
             return false;
         }
         return true;

@@ -140,7 +140,8 @@ public final class NamingUtils {
             formatter.format("%s - %d%02d - %s", seriesName, p_episode.getSeasonNumber(), p_episode.getEpisodeNumber(), name);
         }
         else {
-            formatter.format("%s - %d%s%02d - %s", seriesName, p_episode.getSeasonNumber(), C_SEASON_EPISODE_NUMBER_DELIMITER, p_episode.getEpisodeNumber(), name);
+            formatter.format("%s - %d%s%02d - %s", seriesName, p_episode.getSeasonNumber(), C_SEASON_EPISODE_NUMBER_DELIMITER,
+                    p_episode.getEpisodeNumber(), name);
         }
 
         formatter.close();

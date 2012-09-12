@@ -27,6 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 import javax.swing.plaf.metal.MetalIconFactory;
 
 import org.apache.commons.lang3.StringUtils;
@@ -68,7 +69,7 @@ public class UrialApp extends JFrame {
 
     private void createGUI() {
 
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setMinimumSize(new Dimension(WIDTH, HEIGHT));
         setResizable(false);
 
@@ -179,8 +180,8 @@ public class UrialApp extends JFrame {
             while (!isCancelled()) {
                 try {
                     RenameResult renameResult = m_episodeMatcher.pollAndRename();
-                    String successResult = renameResult.getSuccessResult();
-                    String failResult = renameResult.getFailResult();
+                    String successResult = renameResult.getSuccessResultString();
+                    String failResult = renameResult.getFailResultString();
                     if (StringUtils.isNotBlank(successResult) || StringUtils.isNotBlank(failResult)) {
                         publish(new Date().toString(), "\n", successResult, failResult, "\n");
                     }

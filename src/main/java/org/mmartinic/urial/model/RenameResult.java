@@ -1,40 +1,52 @@
 package org.mmartinic.urial.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.util.Assert;
 
 public class RenameResult {
 
-    private final List<Episode> m_successList;
-    private final List<UnnamedEpisode> m_failList;
-    private final List<UnnamedEpisode> m_noNameList;
+    private final Set<Episode> m_successSet;
+    private final Set<UnnamedEpisode> m_failSet;
+    private final Set<UnnamedEpisode> m_noNameSet;
 
     public RenameResult() {
-        m_successList = new ArrayList<Episode>();
-        m_failList = new ArrayList<UnnamedEpisode>();
-        m_noNameList = new ArrayList<UnnamedEpisode>();
+        m_successSet = new HashSet<>();
+        m_failSet = new HashSet<>();
+        m_noNameSet = new HashSet<>();
     }
 
     public void addSuccess(final Episode p_episode) {
         Assert.notNull(p_episode);
-        m_successList.add(p_episode);
+        m_successSet.add(p_episode);
     }
 
     public void addFail(final UnnamedEpisode p_unnamedEpisode) {
         Assert.notNull(p_unnamedEpisode);
-        m_failList.add(p_unnamedEpisode);
+        m_failSet.add(p_unnamedEpisode);
     }
 
     public void addNoName(final UnnamedEpisode p_unnamedEpisode) {
         Assert.notNull(p_unnamedEpisode);
-        m_noNameList.add(p_unnamedEpisode);
+        m_noNameSet.add(p_unnamedEpisode);
     }
 
-    public String getSuccessResult() {
+    public Set<Episode> getSuccessSet() {
+        return m_successSet;
+    }
+
+    public Set<UnnamedEpisode> getFailSet() {
+        return m_failSet;
+    }
+
+    public Set<UnnamedEpisode> getNoNameSet() {
+        return m_noNameSet;
+    }
+
+    public String getSuccessResultString() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (Episode episode : m_successList) {
+        for (Episode episode : m_successSet) {
             stringBuffer.append("Rename success for: ");
             stringBuffer.append(episode);
             stringBuffer.append("\n");
@@ -42,9 +54,9 @@ public class RenameResult {
         return stringBuffer.toString();
     }
 
-    public String getFailResult() {
+    public String getFailResultString() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (UnnamedEpisode unnamedEpisode : m_failList) {
+        for (UnnamedEpisode unnamedEpisode : m_failSet) {
             stringBuffer.append("Rename failed for: ");
             stringBuffer.append(unnamedEpisode);
             stringBuffer.append("\n");
@@ -52,9 +64,9 @@ public class RenameResult {
         return stringBuffer.toString();
     }
 
-    public String getNoNameResult() {
+    public String getNoNameResultString() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (UnnamedEpisode unnamedEpisode : m_noNameList) {
+        for (UnnamedEpisode unnamedEpisode : m_noNameSet) {
             stringBuffer.append("No name for: ");
             stringBuffer.append(unnamedEpisode);
             stringBuffer.append("\n");
@@ -64,6 +76,6 @@ public class RenameResult {
 
     @Override
     public String toString() {
-        return getSuccessResult() + getFailResult() + getNoNameResult();
+        return getSuccessResultString() + getFailResultString() + getNoNameResultString();
     }
 }

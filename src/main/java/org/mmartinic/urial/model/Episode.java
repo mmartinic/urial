@@ -10,6 +10,18 @@ public class Episode {
     private Integer seasonNumber;
     private LocalDate airDate;
 
+    public Episode() {
+
+    }
+
+    public Episode(String showName, String episodeName, Integer seasonNumber, Integer episodeNumber, LocalDate airDate) {
+        this.episodeName = episodeName;
+        this.showName = showName;
+        this.episodeNumber = episodeNumber;
+        this.seasonNumber = seasonNumber;
+        this.airDate = airDate;
+    }
+
     public String getEpisodeName() {
         return episodeName;
     }
@@ -106,8 +118,8 @@ public class Episode {
 
     @Override
     public String toString() {
-        return "Episode [episodeName=" + episodeName + ", showName=" + showName + ", episodeNumber=" + episodeNumber + ", seasonNumber=" + seasonNumber + ", airDate=" + airDate
-                + "]";
+        return "Episode [episodeName=" + episodeName + ", showName=" + showName + ", episodeNumber=" + episodeNumber + ", seasonNumber="
+                + seasonNumber + ", airDate=" + airDate + "]";
     }
 
 }

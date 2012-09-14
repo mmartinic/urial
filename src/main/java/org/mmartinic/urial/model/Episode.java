@@ -118,8 +118,8 @@ public class Episode {
 
     @Override
     public String toString() {
-        return "Episode [episodeName=" + episodeName + ", showName=" + showName + ", episodeNumber=" + episodeNumber + ", seasonNumber="
-                + seasonNumber + ", airDate=" + airDate + "]";
+        return "Episode [showName =" + showName + ", episodeName=" + episodeName + ", seasonNumber=" + seasonNumber + ", episodeNumber="
+                + episodeNumber + ", airDate=" + airDate + "]";
     }
 
 }

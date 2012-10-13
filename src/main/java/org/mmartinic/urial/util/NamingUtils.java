@@ -26,7 +26,7 @@ public final class NamingUtils {
     private static final String C_NAMED_EPISODE_DELIMITER = "-";
     private static final String C_SEASON_EPISODE_NUMBER_DELIMITER = "x";
     private static final int C_NAME_FORMAT_SEASON_NUMBER_LIMIT = 10;
-    private static final double C_DEFAULT_MIN_MATCH_PERCENTAGE = 0.9;
+    private static final double C_DEFAULT_MIN_MATCH_PERCENTAGE = 0.8;
 
     public static final SimpleDateFormat C_AIR_DATE_FORMAT = new SimpleDateFormat("dd-MMMM-yyyy", Locale.ENGLISH);
 

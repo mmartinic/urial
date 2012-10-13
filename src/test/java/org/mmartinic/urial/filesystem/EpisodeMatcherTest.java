@@ -19,7 +19,7 @@ public class EpisodeMatcherTest {
 
     @Test
     public void testRename() {
-        IOFileFilter seriesFilenameFilter = new SeriesFilenameFilter("avi,srt,sub".split(","));
+        IOFileFilter seriesFilenameFilter = new SeriesFilenameFilter("avi,srt,sub,mp4".split(","));
         UnnamedEpisodesSearcher searcher = new UnnamedEpisodesSearcher(seriesFilenameFilter, "target/test-classes/files");
         EpisodeService episodeService = Mockito.mock(EpisodeService.class);
         Episode episode1 = new Episode("Breaking Bad", "Gliding Over All", 5, 8, LocalDate.now());
@@ -28,14 +28,18 @@ public class EpisodeMatcherTest {
         Episode episode4 =
                 new Episode("Terminator: The Sarah Connor Chronicles", "Strange Things Happen at the One Two Point", 2, 10, LocalDate.now());
         Episode episode5 = new Episode("The Wire", "Hamsterdam", 3, 4, LocalDate.now());
+        Episode episode6 = new Episode("The Office (US)", "Roy's Wedding", 9, 2, LocalDate.now());
+        Episode episode7 = new Episode("Castle (2009)", "Secret's Safe With Me", 5, 3, LocalDate.now());
         Set<Episode> episodes = new HashSet<>();
         episodes.add(episode1);
         episodes.add(episode2);
         episodes.add(episode3);
         episodes.add(episode4);
         episodes.add(episode5);
+        episodes.add(episode6);
+        episodes.add(episode7);
         Mockito.when(episodeService.getEpisodes()).thenReturn(episodes);
-        EpisodeMatcher matcher = new EpisodeMatcher(searcher, episodeService, 0.9, 1);
+        EpisodeMatcher matcher = new EpisodeMatcher(searcher, episodeService, 0.8, 1);
 
         RenameResult renameResult = matcher.pollAndRename();
         Assert.assertEquals(episodes, renameResult.getSuccessSet());

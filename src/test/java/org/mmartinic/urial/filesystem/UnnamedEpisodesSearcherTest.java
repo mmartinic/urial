@@ -22,6 +22,7 @@ public class UnnamedEpisodesSearcherTest {
         expected.add(new UnnamedEpisode(new File("src/test/resources/files/Game.of.Thrones.S02E10.HDTV.XviD-XOR.avi")));
         expected.add(new UnnamedEpisode(new File("src/test/resources/files/Terminator.The.Sarah.Connor.Chronicles.S02E10.HDTV.XviD-XOR.avi")));
         expected.add(new UnnamedEpisode(new File("src/test/resources/files/The.Wire.S03E04.HDTV.XviD-XOR.avi")));
+        expected.add(new UnnamedEpisode(new File("src/test/resources/files/The.Office.US.S09E02.HDTV.XviD-AFG.avi")));
         Set<UnnamedEpisode> files = searcher.getUnnamedEpisodes();
         Assert.assertEquals(expected, files);
     }

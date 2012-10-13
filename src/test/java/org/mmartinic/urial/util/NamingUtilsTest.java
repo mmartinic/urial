@@ -22,6 +22,14 @@ public class NamingUtilsTest {
         named = "The Wire";
         unnamed = "The Shield";
         Assert.assertFalse(NamingUtils.areSeriesNamesEqual(named, unnamed));
+
+        named = "The Office (US)";
+        unnamed = "The.Office.US";
+        Assert.assertTrue(NamingUtils.areSeriesNamesEqual(named, unnamed));
+
+        named = "Castle (2009)";
+        unnamed = "Castle.2009";
+        Assert.assertTrue(NamingUtils.areSeriesNamesEqual(named, unnamed));
     }
 
     @Test

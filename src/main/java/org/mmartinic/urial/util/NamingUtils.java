@@ -75,6 +75,10 @@ public final class NamingUtils {
         return p_string.replaceAll("\\s+", " ").trim();
     }
 
+    private static String removeParentesis(final String p_string) {
+        return p_string.replaceAll("\\s\\(.+\\)", "").trim();
+    }
+
     public static boolean isFileNameUnnamed(final String p_fileName) {
         Assert.hasText(p_fileName);
 
@@ -151,6 +155,7 @@ public final class NamingUtils {
     private static String normalizeName(final String p_name) {
         String name = p_name;
         name = replaceAllForbiddenChars(name, C_NAMED_EPISODE_DELIMITER);
+        name = removeParentesis(name);
         name = removeDuplicateSpaces(name);
         name = WordUtils.capitalize(name);
         return name;

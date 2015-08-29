@@ -1,9 +1,5 @@
 package org.mmartinic.urial.filesystem;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.joda.time.LocalDate;
@@ -15,12 +11,16 @@ import org.mmartinic.urial.model.UnnamedEpisode;
 import org.mmartinic.urial.service.EpisodeService;
 import org.mockito.Mockito;
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
+
 public class EpisodeMatcherTest {
 
     @Test
     public void testRename() {
         IOFileFilter seriesFilenameFilter = new SeriesFilenameFilter("avi,srt,sub,mp4".split(","));
-        UnnamedEpisodesSearcher searcher = new UnnamedEpisodesSearcher(seriesFilenameFilter, "target/test-classes/files");
+        UnnamedEpisodesSearcher searcher = new UnnamedEpisodesSearcher(seriesFilenameFilter, "build/resources/test/files");
         EpisodeService episodeService = Mockito.mock(EpisodeService.class);
         Episode episode1 = new Episode("Breaking Bad", "Gliding Over All", 5, 8, LocalDate.now());
         Episode episode2 = new Episode("Community", "A Fistful of Paintballs", 2, 23, LocalDate.now());
@@ -44,7 +44,7 @@ public class EpisodeMatcherTest {
         RenameResult renameResult = matcher.pollAndRename();
         Assert.assertEquals(episodes, renameResult.getSuccessSet());
         Set<UnnamedEpisode> noNameExpected = new HashSet<>();
-        noNameExpected.add(new UnnamedEpisode(new File("target/test-classes/files/Firefly.S02E01'(.avi")));
+        noNameExpected.add(new UnnamedEpisode(new File("build/resources/test/files/Firefly.S02E01'(.avi")));
         Assert.assertEquals(noNameExpected, renameResult.getNoNameSet());
         Assert.assertTrue(CollectionUtils.isEmpty(renameResult.getFailSet()));
     }

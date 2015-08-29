@@ -1,0 +1,34 @@
+apply plugin: 'java'
+
+version = '1.0'
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.springframework:spring-context:3.1.0.RELEASE'
+    compile 'log4j:log4j:1.2.17'
+    compile 'joda-time:joda-time:2.1'
+    compile 'com.sun.jersey:jersey-client:1.13'
+    compile 'org.codehaus.jackson:jackson-jaxrs:1.9.9'
+    compile 'org.apache.commons:commons-lang3:3.1'
+    compile 'commons-io:commons-io:2.4'
+    compile 'commons-collections:commons-collections:3.2.1'
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.mockito:mockito-core:1.9.0'
+}
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Urial',
+                'Implementation-Version': version,
+                'Main-Class': 'org.mmartinic.urial.UrialApp'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

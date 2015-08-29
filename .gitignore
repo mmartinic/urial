@@ -1,6 +1,8 @@
-/.metadata
+/.gradle
+/.idea
 *.project
 *.classpath
 *.settings
-target/
+build/
 urial.log
+*.iml
